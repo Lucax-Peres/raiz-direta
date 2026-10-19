@@ -1,0 +1,10 @@
+# Variáveis de ambiente com senhas (NUNCA versionar)
+.env
+
+# Dependências e builds
+node_modules/
+dist/
+.next/
+
+# Sistema operacional
+.DS_Store

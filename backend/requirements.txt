@@ -1,0 +1,5 @@
+# Backend do Raiz Direta — dependências fixadas por faixa de versão
+Django>=5.2,<5.3                 # LTS: suporte de segurança até abr/2028
+djangorestframework>=3.18,<3.19  # API REST
+psycopg[binary]>=3.2,<4          # driver do PostgreSQL (psycopg 3)
+python-dotenv>=1.0,<2            # lê o arquivo .env

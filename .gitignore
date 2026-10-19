@@ -8,3 +8,9 @@ dist/
 
 # Sistema operacional
 .DS_Store
+
+# Python / Django
+.venv/
+__pycache__/
+*.pyc
+backend/staticfiles/

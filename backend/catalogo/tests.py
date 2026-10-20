@@ -57,6 +57,28 @@ class RegrasDoBancoTests(BaseCatalogoTestCase):
         with self.assertRaises(ProtectedError):
             self.produtor.delete()
 
+    # --- RN003: a mesma proteção vale para categoria e unidade ---
+    def test_nao_apaga_categoria_com_produtos(self):
+        with self.assertRaises(ProtectedError):
+            self.frutas.delete()
+
+    def test_nao_apaga_unidade_com_produtos(self):
+        with self.assertRaises(ProtectedError):
+            self.kg.delete()
+
+    # --- RN005: produtor único por (nome, município) ---
+    def test_produtor_duplicado_no_mesmo_municipio_e_rejeitado(self):
+        with self.assertRaises(IntegrityError), transaction.atomic():
+            Produtor.objects.create(
+                nome="Sítio Teste", responsavel="Outra Pessoa", municipio="Cuiabá",
+            )
+
+    def test_mesmo_nome_de_produtor_em_outro_municipio_e_permitido(self):
+        Produtor.objects.create(
+            nome="Sítio Teste", responsavel="Outra Pessoa", municipio="Várzea Grande",
+        )
+        self.assertEqual(Produtor.objects.filter(nome="Sítio Teste").count(), 2)
+
 
 class ApiCatalogoTests(BaseCatalogoTestCase):
     def setUp(self):
@@ -97,6 +119,33 @@ class ApiCatalogoTests(BaseCatalogoTestCase):
         dados = self.client.get("/api/produtores/").json()
         self.assertEqual([p["nome"] for p in dados["results"]], ["Chácara A", "Sítio Teste"])
         self.assertEqual(dados["results"][1]["total_produtos"], 1)  # só a Alface está disponível
+
+    # --- RF006: filtros por produtor e por município ---
+    def _criar_segundo_produtor(self):
+        """Cria um produtor em outro município, com um produto disponível."""
+        outro = Produtor.objects.create(
+            nome="Chácara Teste", responsavel="Ciclana Teste", municipio="Várzea Grande",
+        )
+        Produto.objects.create(
+            produtor=outro, categoria=self.frutas, unidade=self.kg,
+            nome="Banana", preco=Decimal("4.80"),
+        )
+        return outro
+
+    def test_filtra_por_produtor(self):
+        outro = self._criar_segundo_produtor()
+        dados = self.client.get(f"/api/produtos/?produtor={outro.pk}").json()
+        self.assertEqual([p["nome"] for p in dados["results"]], ["Banana"])
+
+    def test_filtra_por_municipio_sem_diferenciar_maiusculas(self):
+        self._criar_segundo_produtor()
+        dados = self.client.get("/api/produtos/?municipio=cuiabá").json()  # minúsculo de propósito
+        self.assertEqual(sorted(p["nome"] for p in dados["results"]), ["Alface", "Manga"])
+
+    def test_parametro_produtor_invalido_e_ignorado(self):
+        resposta = self.client.get("/api/produtos/?produtor=abc")
+        self.assertEqual(resposta.status_code, 200)  # não quebra a API
+        self.assertEqual(resposta.json()["count"], 2)  # e não aplica o filtro
 
     def test_visitante_nao_pode_criar_produto(self):
         resposta = self.client.post("/api/produtos/", {"nome": "Invasor"}, format="json")

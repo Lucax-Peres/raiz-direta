@@ -4,7 +4,7 @@ Marketplace B2B que conecta pequenos e médios produtores rurais a restaurantes,
 Projeto acadêmico de Engenharia de Software e Extensão I (Engenharia de Computação).
 
 > 📄 Documentação completa (instalação, arquitetura, modelo de dados, API, segurança):
-> [`docs/Raiz-Direta_Documentacao-Tecnica_v1.0.pdf`](docs/Raiz-Direta_Documentacao-Tecnica_v1.0.pdf)
+> [`docs/Raiz-Direta_Documentacao-Tecnica_v1.1.pdf`](docs/Raiz-Direta_Documentacao-Tecnica_v1.1.pdf)
 
 ## Início rápido
 

@@ -8,6 +8,7 @@ from django.db.models import ProtectedError
 from django.test import TestCase
 from rest_framework.test import APIClient
 
+from .management.commands.popular_dados import PRODUTORES, PRODUTOS
 from .models import Categoria, Produto, Produtor, UnidadeMedida
 
 
@@ -158,5 +159,8 @@ class PopularDadosTests(TestCase):
         primeiro = Produto.objects.count()
         call_command("popular_dados", stdout=StringIO())
         self.assertEqual(Produto.objects.count(), primeiro)
-        self.assertEqual(primeiro, 20)
+        # Compara com o tamanho das listas do seed (em vez de um número fixo),
+        # para o teste continuar válido quando a base fictícia crescer.
+        self.assertEqual(primeiro, len(PRODUTOS))
+        self.assertEqual(Produtor.objects.count(), len(PRODUTORES))
         self.assertTrue(all("(fictício)" in p.nome for p in Produtor.objects.all()))

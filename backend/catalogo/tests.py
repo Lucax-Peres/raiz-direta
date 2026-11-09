@@ -8,7 +8,7 @@ from django.db.models import ProtectedError
 from django.test import TestCase
 from rest_framework.test import APIClient
 
-from .management.commands.popular_dados import PRODUTORES, PRODUTOS
+from .management.commands.popular_dados import MUNICIPIOS_BAIXADA_CUIABANA, PRODUTORES, PRODUTOS
 from .models import Categoria, Produto, Produtor, UnidadeMedida
 
 
@@ -164,3 +164,10 @@ class PopularDadosTests(TestCase):
         self.assertEqual(primeiro, len(PRODUTOS))
         self.assertEqual(Produtor.objects.count(), len(PRODUTORES))
         self.assertTrue(all("(fictício)" in p.nome for p in Produtor.objects.all()))
+
+    def test_seed_tem_somente_produtores_da_baixada_cuiabana(self):
+        # Arrange / Act
+        call_command("popular_dados", stdout=StringIO())
+        # Assert: nenhum produtor fora dos 13 municípios da Baixada Cuiabana
+        fora = set(Produtor.objects.values_list("municipio", flat=True)) - MUNICIPIOS_BAIXADA_CUIABANA
+        self.assertEqual(fora, set(), f"Municípios fora da Baixada Cuiabana: {fora}")

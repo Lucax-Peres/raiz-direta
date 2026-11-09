@@ -31,6 +31,17 @@ UNIDADES = [
     ("cx", "Caixa", False),
 ]
 
+# Recorte geográfico do seed: somente a Baixada Cuiabana. Definição adotada: a da Embrapa
+# (Região Metropolitana do Vale do Rio Cuiabá + entorno metropolitano = 13 municípios).
+# Outras fontes usam recortes diferentes (ex.: algumas incluem Campo Verde).
+MUNICIPIOS_BAIXADA_CUIABANA = {
+    # Região Metropolitana do Vale do Rio Cuiabá
+    "Cuiabá", "Várzea Grande", "Nossa Senhora do Livramento", "Santo Antônio de Leverger",
+    # Entorno metropolitano
+    "Acorizal", "Barão de Melgaço", "Chapada dos Guimarães", "Jangada", "Nobres",
+    "Nova Brasilândia", "Planalto da Serra", "Poconé", "Rosário Oeste",
+}
+
 PRODUTORES = [
     ("Sítio Boa Esperança (fictício)", "Ana Exemplo", "Cuiabá",
      "Hortaliças cultivadas sem agrotóxicos."),
@@ -61,15 +72,15 @@ PRODUTORES = [
      "Pomar de manga, goiaba e acerola."),
     ("Chácara Raio de Sol (fictício)", "Olívia Exemplo", "Jangada",
      "Legumes de ciclo curto."),
-    ("Sítio Bela Vista (fictício)", "Paulo Exemplo", "Campo Verde",
-     "Raízes e hortaliças de clima ameno."),
+    ("Sítio Bela Vista (fictício)", "Paulo Exemplo", "Planalto da Serra",
+     "Raízes e hortaliças."),
     ("Associação de Produtores Exemplo (fictício)", "Quitéria Exemplo", "Nossa Senhora do Livramento",
      "Associação que reúne a produção de várias famílias."),
     ("Sítio Cachoeira (fictício)", "Rafael Exemplo", "Nobres",
      "Abacaxi, mamão e melancia."),
-    ("Chácara Flor do Campo (fictício)", "Sílvia Exemplo", "Jaciara",
+    ("Chácara Flor do Campo (fictício)", "Sílvia Exemplo", "Nova Brasilândia",
      "Hortaliças e ovos de granja."),
-    ("Sítio Recanto do Cerrado (fictício)", "Tiago Exemplo", "Dom Aquino",
+    ("Sítio Recanto do Cerrado (fictício)", "Tiago Exemplo", "Santo Antônio de Leverger",
      "Raízes, tubérculos e especiarias."),
     ("Horta Escola Exemplo (fictício)", "Úrsula Exemplo", "Várzea Grande",
      "Horta comunitária ligada a um projeto educativo."),
@@ -168,7 +179,7 @@ PRODUTOS = [
     (13, "Vagem", "hortalicas", "kg", "11.00", True),
     (13, "Jiló", "hortalicas", "kg", "7.50", True),
     (13, "Maxixe", "hortalicas", "kg", "9.50", True),
-    # 14 · Sítio Bela Vista (Campo Verde)
+    # 14 · Sítio Bela Vista (Planalto da Serra)
     (14, "Batata-inglesa", "raizes-e-tuberculos", "kg", "5.20", True),
     (14, "Cenoura", "raizes-e-tuberculos", "kg", "4.80", True),
     (14, "Beterraba", "raizes-e-tuberculos", "kg", "5.00", True),
@@ -187,14 +198,14 @@ PRODUTOS = [
     (16, "Maracujá", "frutas", "kg", "7.50", True),
     (16, "Melancia", "frutas", "un", "20.00", True),
     (16, "Laranja-pera", "frutas", "kg", "3.50", False),
-    # 17 · Chácara Flor do Campo (Jaciara)
+    # 17 · Chácara Flor do Campo (Nova Brasilândia)
     (17, "Alface americana", "hortalicas", "maço", "4.50", True),
     (17, "Repolho roxo", "hortalicas", "un", "7.00", True),
     (17, "Couve-flor", "hortalicas", "un", "8.00", True),
     (17, "Rabanete", "raizes-e-tuberculos", "maço", "4.00", True),
     (17, "Ovos de granja", "ovos", "dz", "9.50", True),
     (17, "Ovos de granja", "ovos", "cx", "22.50", True),
-    # 18 · Sítio Recanto do Cerrado (Dom Aquino)
+    # 18 · Sítio Recanto do Cerrado (Santo Antônio de Leverger)
     (18, "Mandioca", "raizes-e-tuberculos", "kg", "3.90", True),
     (18, "Batata-doce", "raizes-e-tuberculos", "kg", "4.50", True),
     (18, "Inhame", "raizes-e-tuberculos", "kg", "7.00", True),
